@@ -35,16 +35,20 @@ public class EmpregadoController {
         return projetoService.findAll();
     }
 
-    @ModelAttribute("departamento")
+    @ModelAttribute("departamentos")
     public List<DepartamentoDTO> departamentos(){
         return departamentoService.findAll();
     }
 
     @GetMapping("/form")
     public String loadForm(Model model){
-        model.addAttribute("empregadoDTO", new EmpregadoDTO());
+        EmpregadoDTO empregadoDTO = new EmpregadoDTO();
+        model.addAttribute("empregadoDTO", empregadoDTO);
+        List<DepartamentoDTO> departamentos = departamentoService.findAll();
+        model.addAttribute("departamentos", departamentos); // Adicionar departamentos ao modelo
         return "empregado/novo-empregado";
     }
+
 
     @PostMapping()
     public String insert(@Valid EmpregadoDTO empregadoDTO,
@@ -54,7 +58,7 @@ public class EmpregadoController {
             return "empregado/novo-empregado";
         }
         empregadoDTO = service.insert(empregadoDTO);
-        attributes.addFlashAttribute("mensagem", "Produto salvo com sucesso");
+        attributes.addFlashAttribute("mensagem", "Empregado salvo com sucesso");
         return "redirect:/empregados/form";
     }
 
@@ -72,7 +76,7 @@ public class EmpregadoController {
     }
 
     @PutMapping("/{id}")
-    public String findById(@PathVariable("id") Long id,
+    public String update(@PathVariable("id") Long id,
                            @Valid EmpregadoDTO empregadoDTO,
                            BindingResult result) {
         if (result.hasErrors()) {
@@ -88,5 +92,4 @@ public class EmpregadoController {
         service.delete(id);
         return "redirect:/empregados";
     }
-
 }

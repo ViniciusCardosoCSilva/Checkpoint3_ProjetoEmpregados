@@ -1,7 +1,6 @@
 package br.com.fiap.empregados.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.*;
 import java.util.HashSet;
 import java.util.Set;

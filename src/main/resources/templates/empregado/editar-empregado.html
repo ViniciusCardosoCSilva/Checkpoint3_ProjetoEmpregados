@@ -1,10 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br" layout:decorate="~{template.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Alteração de Empregado</title>
 </head>
 <body>
+<h1>Editar</h1>
+<div layout:fragment="conteudo">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Alteração de Empregado</h2>
+                <div class="alert alert-success alert-dismissible fade show" th:if="${mensagem}">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <span th:text="${mensagem}"></span>
+                </div>
 
+                <form action="#" th:action="@{/empregados/{id}(id=${empregadoDTO.id})}" th:object="${empregadoDTO}" method="post">
+                    <input type="hidden" name="_method" value="put">
+                    <div class="row mb-3">
+                        <label for="nome" class="col-sm-1 col-form-label">Nome:</label>
+                        <div class="col-sm-5">
+                            <input id="nome" class="form-control" type="text" th:field="*{nome}" />
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="email" class="col-sm-1 col-form-label">Email:</label>
+                        <div class="col-sm-3">
+                            <input id="email" class="form-control" type="text" th:field="*{email}">
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="mensagem" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                        </div>
+                    </div>
+                    <!--adicionando e populando ComboBox Departamento-->
+                    <div class="form-row">
+                        <div class="row mb-3">
+                            <label class="col-sm-1 col-form-label">Departamento:</label>
+                            <div class="col-sm-3">
+                                <select class="chosen-select form-control" data-placehold="departamento" id="departamento"
+                                        name="departamento" th:field="*{departamento}">
+                                    <option th:each="departamento : ${departamentos}"
+                                            th:text="${departamento.nome}"
+                                            th:value="${departamento.id}">
+                                    </option>
+                                </select>
+
+                            </div>
+                            <div class="col-sm-5">
+								<span class="mensagem" th:errors="*{departamento}"
+                                      th:if="${#fields.hasErrors('departamento')}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--adicionando e populando ComboBox Projetos-->
+                    <div class="form-row">
+                        <div class="row mb-3">
+                            <label class="col-sm-1 col-form-label">Projetos:</label>
+                            <div class="col-sm-3">
+                                <select class="chosen-select form-control" data-placehold="projetos" id="projetos" multiple="true"
+                                        name="lojas" th:field="${empregadoDTO.projetos}">
+                                    <option th:each="projeto :${projetos}"
+                                            th:text="${projeto.nome}"
+                                            th:value="${projeto.id}"/>
+                                </select>
+                            </div>
+                            <div class="col-sm-5">
+								<span class="mensagem" th:errors="*{projetos}"
+                                      th:if="${#fields.hasErrors('projetos')}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <label for="salario" class="col-sm-1 col-form-label">Salário:</label>
+                        <div class="col-sm-2">
+                            <input id="salario" class="form-control" type="text" th:field="*{salario}">
+                        </div>
+                        <div class="col-sm-5">
+								<span class="mensagem" th:if="${#fields.hasErrors('salario')}"
+                                      th:errors="*{salario}"></span>
+                        </div>
+                    </div>
+
+                    <input class="btn btn-primary" type="submit" value="Alterar" />
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
